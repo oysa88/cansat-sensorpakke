@@ -174,7 +174,8 @@ namespace BME280 {
     //% weight=76 blockGap=8
     export function Dewpoint(): number {
         get();
-        return T - Math.idiv(100 - H, 5)
+        let tempC = T / 10          // gjør om fra tidels grader til °C
+        return tempC - (100 - H) / 5
     }
 
     /**
