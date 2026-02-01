@@ -135,34 +135,39 @@ namespace GY91 {
         let var2 = (((((adc_T >> 4) - dig_T1) * ((adc_T >> 4) - dig_T1)) >> 12) * dig_T3) >> 14
 
         tFine = var1 + var2
+
+        // SAMME som BME280: Math.idiv((t * 5 + 128) >> 8, 100)
         let T = (tFine * 5 + 128) >> 8
-        return round2(T / 100)
+        return Math.idiv(T, 100)
     }
 
     // ------------------ TRYKK ------------------
     //% block="lufttrykk (Pa)"
     //% group="Miljø"
     export function pressure(): number {
-        temperature()
+        temperature() // oppdaterer tFine først
 
         let adc_P = read24(BMP280, 0xF7) >> 4
 
-        let var1 = tFine - 128000
-        let var2 = var1 * var1 * dig_P6
-        var2 = var2 + ((var1 * dig_P5) << 17)
-        var2 = var2 + (dig_P4 << 35)
-        var1 = ((var1 * var1 * dig_P3) >> 8) + ((var1 * dig_P2) << 12)
-        var1 = (((1 << 47) + var1) * dig_P1) >> 33
+        let var1 = (tFine >> 1) - 64000
+        let var2 = (((var1 >> 2) * (var1 >> 2)) >> 11) * dig_P6
+        var2 = var2 + ((var1 * dig_P5) << 1)
+        var2 = (var2 >> 2) + (dig_P4 << 16)
+
+        var1 = (((dig_P3 * (((var1 >> 2) * (var1 >> 2)) >> 13)) >> 3) + ((dig_P2 * var1) >> 1)) >> 18
+        var1 = ((32768 + var1) * dig_P1) >> 15
 
         if (var1 == 0) return 0
 
-        let p = 1048576 - adc_P
-        p = (((p << 31) - var2) * 3125) / var1
-        var1 = (dig_P9 * (p >> 13) * (p >> 13)) >> 25
-        var2 = (dig_P8 * p) >> 19
-        p = ((p + var1 + var2) >> 8) + (dig_P7 << 4)
+        let p = ((1048576 - adc_P) - (var2 >> 12)) * 3125
+        p = Math.idiv(p, var1) * 2
 
-        return round2(p / 256)
+        var1 = (dig_P9 * (((p >> 3) * (p >> 3)) >> 13)) >> 12
+        var2 = ((p >> 2) * dig_P8) >> 13
+
+        p = p + ((var1 + var2 + dig_P7) >> 4)
+
+        return p
     }
 
     // ------------------ BMP280 KALIBRERING ------------------
