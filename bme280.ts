@@ -130,8 +130,8 @@ namespace BME280 {
     //% weight=80 blockGap=8
     export function temperature(u: BME280_T): number {
         get();
-        if (u == BME280_T.T_C) return T;
-        else return 32 + Math.idiv(T * 9, 5)
+        if (u == BME280_T.T_C) return T / 10;
+        else return 32 + (T / 10) * 9 / 5;
     }
 
     /**
