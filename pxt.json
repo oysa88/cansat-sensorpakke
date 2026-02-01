@@ -8,7 +8,6 @@
         "flashlog": "*"
     },
     "files": [
-        "main.ts",
         "README.md",
         "gy91.ts",
         "neo-6m.ts",
@@ -16,8 +15,7 @@
         "e32-radio.ts",
         "sgp30.ts",
         "datalogger.ts",
-        "oled-skjerm.ts",
-        "main.py"
+        "oled-skjerm.ts"
     ],
     "testFiles": [
         "test.ts"
