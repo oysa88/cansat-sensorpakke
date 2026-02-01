@@ -1,0 +1,41 @@
+{
+    "name": "CanSat sensorpakke",
+    "description": "Komplett pakke med alle bibliotekene brukt av CanSat med micro:bit. Talentsenter i realfag, Oslo.",
+    "dependencies": {
+        "core": "*",
+        "radio": "*",
+        "microphone": "*",
+        "flashlog": "*"
+    },
+    "files": [
+        "main.ts",
+        "README.md",
+        "gy91.ts",
+        "neo-6m.ts",
+        "bme280.ts",
+        "e32-radio.ts",
+        "sgp30.ts",
+        "datalogger.ts",
+        "oled-skjerm.ts",
+        "main.py"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true,
+    "targetVersions": {
+        "target": "8.0.18",
+        "targetId": "microbit"
+    },
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "tsprj",
+    "yotta": {
+        "config": {
+            "MICROBIT_BLE_UTILITY_SERVICE": 1,
+            "MICROBIT_BLE_UTILITY_SERVICE_PAIRING": 1
+        }
+    },
+    "icon": "https://cdn.makecode.com/blob/0703ee5e0cc718390736601fbaaefe3f429c0ef3/static/libs/datalogger.png"
+}
