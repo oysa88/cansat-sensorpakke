@@ -136,9 +136,11 @@ namespace GY91 {
 
         tFine = var1 + var2
 
-        // SAMME som BME280: Math.idiv((t * 5 + 128) >> 8, 100)
-        let T = (tFine * 5 + 128) >> 8
-        return Math.idiv(T, 100)
+        // Original BME/BMP-formel gir temperatur *100
+        let T_x100 = (tFine * 5 + 128) >> 8   // temperatur i hundredels °C
+
+        // Vi vil ha én desimal → del på 10 i stedet for 100
+        return Math.round(T_x100 / 10) / 10
     }
 
     // ------------------ TRYKK ------------------
